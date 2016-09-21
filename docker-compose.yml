@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  jenkins:
+    build:
+      context: ./jenkins
+    container_name: jenkins-ci
+    expose:
+      - 8080
+      - 50000
+    ports:
+      - 8080:8080
+      - 50000:50000
+    links:
+      - registry
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+    networks:
+      backend:
+        aliases:
+          - jenkins-ci
+  registry:
+    image: registry:2
+    container_name: registry-ci
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    networks:
+      backend:
+        aliases:
+          - registry-ci
+
+networks:
+  backend: {}
