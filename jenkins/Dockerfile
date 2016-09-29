@@ -12,12 +12,12 @@ RUN deps=" \
     apt-get update && \
     apt-get --with-new-pkgs upgrade --no-install-recommends -y && \
     apt-get install -y $deps --no-install-recommends && \
-    echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+    echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers && \
+    update-ca-certificates -f
 
 # Cleanup
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 USER jenkins
-RUN /usr/local/bin/install-plugins.sh docker-plugin
-
+RUN /usr/local/bin/install-plugins.sh docker-build-publish

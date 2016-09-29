@@ -21,12 +21,18 @@ services:
         aliases:
           - jenkins-ci
   registry:
-    image: registry:2
+    build:
+          context: ./registry
     container_name: registry-ci
     expose:
       - 5000
     ports:
       - 5000:5000
+    volumes:
+      - ./registry/certs:/certs
+    environment:
+      - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt
+      - REGISTRY_HTTP_TLS_KEY=/certs/domain.key
     networks:
       backend:
         aliases:
